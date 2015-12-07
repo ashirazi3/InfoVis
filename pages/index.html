@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>BestCity</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="../checkbox/css/component.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- D3.js -->
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="../js/d3.stretched.chord.js"></script>
+    <script src="../js/d3.layout.chord.sort.js"></script>
+
+    <!-- jQuery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>-->
+
+    <!-- Open Sans & CSS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,400,300' rel='stylesheet' type='text/css'>
+    <style>
+        /*body {*/
+        /*font-family: 'Open Sans', sans-serif;*/
+        /*font-size: 12px;*/
+        /*font-weight: 400;*/
+        /*color: #525252;*/
+        /*text-align: center;*/
+        /*}*/
+
+        line {
+            stroke: #000;
+            stroke-width: 1 . px;
+        }
+
+        /*text {*/
+        /*font-size: 8px;*/
+        /*}*/
+
+        .titles {
+            font-size: 10px;
+        }
+
+        path.chord {
+            fill-opacity: .80;
+        }
+    </style>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../js/map.js"></script>
+
+
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../checkbox/css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="../checkbox/css/demo.css"/>
+    <link rel="stylesheet" type="text/css" href="../checkbox/css/component.css"/>
+    <script src="../checkbox/js/modernizr.custom.js"></script>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Navigation -->
+    <div class="col-lg-2">
+        <form class="ac-custom ac-custom-legend ac-checkbox ac-checkmark" autocomplete="off">
+            <!--*legends*/ -->
+            <div class='my-legend'>
+                <div class='legend-scale' style="padding-top:20px">
+                    <ul class='legend-labels'>
+                        <li style="line-height:20px">Transportation</li>
+                        <li><span style='background:#FFA8A8;'></span> <input id="cbl1" name="cbl1" type="checkbox"
+                                                                             value="Public Transportation Usage"><label
+                                for="cbl1">Public Transportation Usage</label></li>
+                        <li><span style='background:#FFC8E3;'></span><input id="cbl2" name="cbl2" type="checkbox"
+                                                                            value="Congestion"><label
+                                for="cbl2">Congestion</label></li>
+                        <li><span style='background:#F0CBFE;'></span><input id="cbl3" name="cbl3" type="checkbox"
+                                                                            value="Walking Score"><label
+                                for="cbl3">Walking Score</label></li>
+
+                        <li style="line-height:20px">Cost of living</li>
+                        <li><span style='background:#CAFFD8;'></span><input id="cbl4" name="cbl4" type="checkbox"
+                                                                            value="2Bed Apartment Rent"><label
+                                for="cbl4">2Bed Apartment Rent</label></li>
+                        <li><span style='background:#8FFEDD;'></span><input id="cbl5" name="cbl5" type="checkbox"
+                                                                            value="Gas per Gallon"><label
+                                for="cbl5">[$] Gas/Gallon</label></li>
+                        <li><span style='background:#C9DECB;'></span><input id="cbl6" name="cbl6" type="checkbox"
+                                                                            value="Electricity"><label
+                                for="cbl6">[$] Electricity</label></li>
+                        <li><span style='background:#EDEF85;'></span> <input id="cbl7" name="cbl7" type="checkbox"
+                                                                             value="Grocery"><label
+                                for="cbl7">[$] Grocery</label></li>
+                        <li><span style='background:#A5FFA8;'></span><input id="cbl8" name="cbl8" type="checkbox"
+                                                                            value="Internet"><label
+                                for="cbl8">[$] Internet</label></li>
+
+                        <li style="line-height:20px">Employment</li>
+                        <li><span style='background:#FFF06A;'></span><input id="cbl9" name="cbl9" type="checkbox"
+                                                                            value="Average Salary"><label
+                                for="cbl9">Avg Salary</label></li>
+                        <li><span style='background:#FFCFA4;'></span><input id="cbl10" name="cbl10" type="checkbox"
+                                                                            value="Unemployment Rate"><label
+                                for="cbl10">Employment Rate</label></li>
+
+                        <li style="line-height:20px">Living quality</li>
+                        <li><span style='background:#DDCEFF;'></span><input id="cbl11" name="cbl11" type="checkbox"
+                                                                            value="Music Venues per 100k ppl"><label
+                                for="cbl11">Music Venues/100k ppl</label></li>
+                        <li><span style='background:#B8E2EF;'></span><input id="cbl12" name="cbl12" type="checkbox"
+                                                                            value="Cheap Takeouts per 100k ppl"><label
+                                for="cbl12">Cheap Takeouts/100k ppl</label></li>
+                        <li><span style='background:#CEDEF4;'></span> <input id="cbl13" name="cbl13" type="checkbox"
+                                                                             value="Laundromats per 100 ppl"><label
+                                for="cbl13">Laundromats/100k ppl</label></li>
+                        <li><span style='background:#BBEBFF'></span><input id="cbl14" name="cbl14" type="checkbox"
+                                                                           value="Coffee shops per 100 ppl"><label
+                                for="cbl14">Coffee shops/100k ppl</label></li>
+
+                        <li style="line-height:20px">Neiborhood</li>
+                        <li><span style='background:#DFDFDF;'></span><input id="cbl15" name="cbl15" type="checkbox"
+                                                                            value="Young and Single"><label
+                                for="cbl15">Young and Single</label></li>
+                        <li><span style='background:#B3B5C1;'></span><input id="cbl16" name="cbl16" type="checkbox"
+                                                                            value="Crime"><label
+                                for="cbl16">Crime</label></li>
+                        <li><span style='background:#C0C4B9;'></span><input id="cbl17" name="cbl17" type="checkbox"
+                                                                            value="Events"><label
+                                for="cbl17">Events</label></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <button class="button5" id="sort" onclick="go(2)" >Sort</button>
+        <br>
+        <button class="button5" id="reset" onclick="go(1)">Reset</button>
+
+    </div>
+
+    <div id="column" class="col-lg-7">
+        <div class="row" id="circle">
+            <h3 style="text-align:center; margin-bottom:0; margin-top:.5em;">READY TO MOVE?</h3>
+            <h5 style="text-align:center;">Comparing and Ranking different cities on livability metrics</h5>
+
+            <div id="chart"></div>
+
+
+        </div>
+        <div class="row" id="barchart">
+            <style>
+                body {
+                    font: 10px sans-serif;
+                }
+
+                .axis path,
+                .axis line {
+                    fill: none;
+                    stroke: #000;
+                    shape-rendering: crispEdges;
+                }
+
+                .rect:hover {
+                    fill: orangered;
+                }
+
+                .x.axis path {
+                    display: none;
+                }
+
+                .tick {
+                    opacity: 0;
+                }
+
+                .d3-tip {
+                    line-height: 1;
+                    font-weight: bold;
+                    padding: 12px;
+                    background: rgba(0, 0, 0, 0.8);
+                    color: #fff;
+                    border-radius: 2px;
+                }
+
+                /* Creates a small triangle extender for the tooltip */
+
+                .d3-tip:after {
+                    box-sizing: border-box;
+                    display: inline;
+                    font-size: 10px;
+                    width: 100%;
+                    line-height: 1;
+                    color: rgba(0, 0, 0, 0.8);
+                    content: "\25BC";
+                    position: absolute;
+                    text-align: center;
+                }
+
+                /* Style northward tooltips differently */
+
+                .d3-tip.n:after {
+                    margin: -1px 0 0 0;
+                    top: 100%;
+                    left: 0;
+                }
+
+                .button5 {
+                    
+                    background-color: white;
+                    color: white;
+                    margin: 3px;
+                    margin-left: 150px;
+                    padding: 4px 8px;
+                    width:80px;
+                    border: 0px solid #555555;
+                    font-family: 'Lato', Arial;
+                    font-size: 13px;
+                }
+
+                .button5:hover {
+                    background-color: #555555;
+                    color: white;
+                }
+
+                .button5:active {
+                    background-color: #111111;
+                }
+            </style>
+
+
+            <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+
+        </div>
+    </div>
+
+    <div class="col-lg-3">
+        <p style="padding-left:20px; padding-top:30px">Cities</p>
+
+        <form id="city-list" class="ac-custom ac-checkbox ac-checkmark" autocomplete="off">
+            <div style="float: left;">
+                <ul>
+                    <li><input id="cb1" name="cb1" type="checkbox" onclick="changeColor1()" value="Albuquerque"><label
+                            for="cb1">Albuquerque</label></li>
+                    <li><input id="cb2" name="cb2" type="checkbox" onclick="changeColor2()" value="Atlanta"><label
+                            for="cb2">Atlanta</label></li>
+                    <li><input id="cb3" name="cb3" type="checkbox" onclick="changeColor3()" value="Austin"><label
+                            for="cb3">Austin</label></li>
+                    <li><input id="cb4" name="cb4" type="checkbox" onclick="changeColor4()" value="Boston"><label
+                            for="cb4">Boston </label></li>
+                    <li><input id="cb5" name="cb5" type="checkbox" onclick="changeColor5()" value="Charlotte"><label
+                            for="cb5">Charlotte</label></li>
+                    <li><input id="cb6" name="cb6" type="checkbox" onclick="changeColor6()"
+                               value="Colorado Springs"><label for="cb6">Colorado Springs</label></li>
+                    <li><input id="cb7" name="cb7" type="checkbox" onclick="changeColor7()" value="Columbus"><label
+                            for="cb7">Columbus</label></li>
+                    <li><input id="cb8" name="cb8" type="checkbox" onclick="changeColor8()" value="Dallas"><label
+                            for="cb8">Dallas</label></li>
+                    <li><input id="cb9" name="cb9" type="checkbox" onclick="changeColor9()" value="Denver"><label
+                            for="cb9">Denver</label></li>
+                    <li><input id="cb10" name="cb10" type="checkbox" onclick="changeColor10()" value="Fresno"><label
+                            for="cb10">Fresno</label></li>
+                    <li><input id="cb11" name="cb11" type="checkbox" onclick="changeColor11()" value="Houston"><label
+                            for="cb11">Houston</label></li>
+                    <li><input id="cb12" name="cb12" type="checkbox" onclick="changeColor12()"
+                               value="Kansas City"><label for="cb12">Kansas City</label></li>
+                    <li><input id="cb13" name="cb13" type="checkbox" onclick="changeColor13()" value="Las Vegas"><label
+                            for="cb13">Las Vegas</label></li>
+                    <li><input id="cb14" name="cb14" type="checkbox" onclick="changeColor14()" value="Long Beach"><label
+                            for="cb14">Long Beach</label></li>
+                    <li><input id="cb15" name="cb15" type="checkbox" onclick="changeColor15()" value="Miami"><label
+                            for="cb15">Miami</label></li>
+                    <li><input id="cb16" name="cb16" type="checkbox" onclick="changeColor16()" value="Milwaukee"><label
+                            for="cb16">Milwaukee</label></li>
+                    <li><input id="cb17" name="cb17" type="checkbox" onclick="changeColor17()"
+                               value="Minneapolis"><label for="cb17">Minneapolis</label></li>
+                    <li><input id="cb18" name="cb18" type="checkbox" onclick="changeColor18()" value="Nashville"><label
+                            for="cb18">Nashville</label></li>
+                </ul>
+            </div>
+
+            <div style="float: left; padding-left:30px">
+                <ul>
+                    <li><input id="cb19" name="cb19" type="checkbox" onclick="changeColor19()"
+                               value="New York City"><label for="cb19">New York City</label></li>
+                    <li><input id="cb20" name="cb20" type="checkbox" onclick="changeColor20()"
+                               value="Oklahoma City"><label for="cb20">Oklahoma City</label></li>
+                    <li><input id="cb21" name="cb21" type="checkbox" onclick="changeColor21()" value="Omaha"><label
+                            for="cb21">Omaha</label></li>
+                    <li><input id="cb22" name="cb22" type="checkbox" onclick="changeColor22()"
+                               value="Philadelphia"><label for="cb22">Philadelphia</label></li>
+                    <li><input id="cb23" name="cb23" type="checkbox" onclick="changeColor23()" value="Phoenix"><label
+                            for="cb23">Phoenix</label></li>
+                    <li><input id="cb24" name="cb24" type="checkbox" onclick="changeColor24()" value="Portland"><label
+                            for="cb24">Portland</label></li>
+                    <li><input id="cb25" name="cb25" type="checkbox" onclick="changeColor25()" value="Raleigh"><label
+                            for="cb25">Raleigh</label></li>
+                    <li><input id="cb26" name="cb26" type="checkbox" onclick="changeColor26()" value="Sacramento"><label
+                            for="cb26">Sacramento</label></li>
+                    <li><input id="cb27" name="cb27" type="checkbox" onclick="changeColor27()"
+                               value="San Antonio"><label for="cb27">San Antonio</label></li>
+                    <li><input id="cb28" name="cb28" type="checkbox" onclick="changeColor28()" value="San Diego"><label
+                            for="cb28">San Diego</label></li>
+                    <li><input id="cb29" name="cb29" type="checkbox" onclick="changeColor29()"
+                               value="San Francisco"><label for="cb29">San Francisco</label></li>
+                    <li><input id="cb30" name="cb30" type="checkbox" onclick="changeColor30()" value="San Jose"><label
+                            for="cb30">San Jose</label></li>
+                    <li><input id="cb31" name="cb31" type="checkbox" onclick="changeColor31()" value="Seattle"><label
+                            for="cb31">Seattle</label></li>
+                    <li><input id="cb32" name="cb32" type="checkbox" onclick="changeColor32()" value="Tucson"><label
+                            for="cb32">Tucson</label></li>
+                    <li><input id="cb33" name="cb33" type="checkbox" onclick="changeColor33()" value="Tulsa"><label
+                            for="cb33">Tulsa</label></li>
+                    <li><input id="cb34" name="cb34" type="checkbox" onclick="changeColor34()" value="Virginia Beach"><label
+                            for="cb34">Virginia Beach</label></li>
+                    <li><input id="cb35" name="cb35" type="checkbox" onclick="changeColor35()"
+                               value="Washington, DC"><label for="cb35">Washington, DC</label></li>
+                </ul>
+            </div>
+        </form>
+
+        <!-- map -->
+        <svg version="1.1" baseProfile="basic" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" viewBox="0 0 771.103 469.967" xml:space="preserve">
+<g id="Laag_1">
+<g id="g10081" transform="matrix(1.25,0,0,-1.25,0,343.1125)">
+<g id="g10083" transform="scale(0.24,0.24)">
+<path id="path10085" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M312.637,923.707l-80.873-4.271l-21.279,12.801l-59.586,4.266l8.509,21.328l-12.764,25.614l-21.279,21.333l21.279,123.729
+                              l55.332-21.335l-21.279-46.932l17.025-29.863l46.813,42.669l4.255,68.267l204.303-51.211L419.043,906.64L312.637,923.707
+                              L312.637,923.707z"></path>
+<path id="path10087" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M23.213,753.033l8.509,29.871l93.643,196.261l12.764,4.279l12.77-25.612l-4.255-21.33l63.841-4.266l21.279-12.801l76.615,4.271
+                              l110.664-17.067l17.025-42.668l-46.816-51.204l12.764-29.863l-12.764-8.538l-21.286-102.401l-165.99,38.4L23.213,753.033
+                              L23.213,753.033z"></path>
+<path id="path10089" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M159.407,522.629l234.098-281.606v-34.134l17.028-17.07l-17.028-17.067l-17.025-55.462l7.523-21.335l-122.445,4.268
+                              l-21.279,85.332l-38.304,29.867l-55.332,21.338l-21.279,29.863l-29.795,4.274L40.234,390.359l17.025,21.333l-21.282,29.87v21.333
+                              l17.031,12.798l-12.773,21.335l-12.767-4.266l-8.516,34.134L1.927,556.762l4.261,72.536l-4.261,29.87l21.286,93.866
+                              l178.763-42.668L159.407,522.629z"></path>
+<path id="path10091" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M367.965,671.965l123.438-21.335l-51.081-298.674l-4.255-64.001h-17.025l-25.537-46.934L159.407,522.629l42.568,187.736
+                              L367.965,671.965L367.965,671.965z"></path>
+<path id="path10093" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M453.092,1090.102h38.311l-8.516-55.461l8.516-55.475l42.559-55.459l-12.77-46.938l-8.509-12.796l4.255-12.803l17.025,4.266
+                              l29.795-76.802l21.283,4.271l42.559-4.271l4.254,4.271l4.261-4.271l-17.025-149.336l-127.686,21.333l-123.438,21.335
+                              l21.286,102.401l12.764,8.538l-12.764,29.863l46.816,51.204l-17.025,42.668L453.092,1090.102L453.092,1090.102z"></path>
+<path id="path10095" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M491.403,650.631l127.686-21.333l-8.516-64.001l93.639-17.069l-38.304-230.405l-225.586,34.134L491.403,650.631L491.403,650.631z
+                              "></path>
+<path id="path10097" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M393.506,241.023l25.537,46.934h17.025l4.255,64.001l225.586-34.134L627.598-40.582l-85.124,12.796L393.506,61.82l12.764,21.331
+                              L384.99,95.954l-8.509,21.335l17.025,55.462l17.028,17.067l-17.028,17.07V241.023L393.506,241.023z"></path>
+<path id="path10099" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M491.403,1085.837l489.463-72.531l-12.767-192.009l-8.512-46.932l-314.964,29.871l-8.509-25.605l-4.261,4.272l-4.254-4.272
+                              l-42.559,4.272l-21.283-4.272l-29.795,76.803l-17.025-4.266l-4.255,12.803l8.509,12.796l12.77,46.938l-42.559,55.459
+                              l-8.516,55.475L491.403,1085.837L491.403,1085.837z"></path>
+<path id="path10101" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M959.586,774.366V659.167l-12.77-132.272l-242.604,21.333l-93.639,17.069l8.516,64.001l17.025,149.334l8.509,25.605
+                              L959.586,774.366z"></path>
+<path id="path10103" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M704.212,548.228l242.604-21.333l85.13-4.266v-68.27l-4.261-166.403l-46.82,4.264l-314.958,25.602L704.212,548.228z"></path>
+<path id="path10105" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M665.908,317.823l314.958-25.602v-25.599L963.841-36.318l-161.738,8.532l-114.915,4.271L674.42-40.582h-46.823L665.908,317.823
+                              L665.908,317.823z"></path>
+<path id="path10107" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M980.866,1013.306l276.657-8.529l12.771-25.612v-21.333l12.77-38.397v-25.601l4.251-21.333v-51.204H968.102L980.866,1013.306z"></path>
+<path id="path10109" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M968.102,821.298h319.212l4.261-17.061l-4.261-21.333l12.776-4.272V676.231l4.251-25.601l-12.767-12.801l17.025-21.328
+                              l-21.286,12.796l-34.046,8.532h-17.025l-29.788,12.801l-246.869,8.537v115.199L968.102,821.298L968.102,821.298z"></path>
+<path id="path10111" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1031.947,522.629l-85.13,4.266l12.77,132.272l246.869-8.537l29.788-12.801h17.025l34.046-8.532l21.286-12.796l12.77-42.672
+                              l17.025-38.402v-21.333l8.512-21.333v-17.07l23.425-20.863l-338.385-0.469V522.629L1031.947,522.629z"></path>
+<path id="path10113" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1031.947,454.359l338.027,0.785l15.241-13.582l-12.767-8.535l29.782-29.865V287.956h-374.544L1031.947,454.359z"></path>
+<path id="path10115" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1027.686,287.956h374.544l4.265-42.666l8.512-51.204l4.251-72.533l-4.251-59.733l4.251-12.803l-34.043,17.067h-25.534
+                              l-34.056-17.067l-4.255,17.067l-29.795,4.264l-8.512-17.067l-29.795,34.137l-25.534-4.268l-4.261,8.532l-59.586,12.803
+                              l-34.05,21.331l-8.516,8.538l4.261,115.199l-144.717,17.067v25.599L1027.686,287.956L1027.686,287.956z"></path>
+<path id="path10117" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M980.866,266.622l144.717-17.067l-4.261-115.199l8.516-8.538l34.05-21.331l59.586-12.803l4.261-8.532l25.534,4.268l29.798-34.137
+                              l8.509,17.067l29.795-4.264l4.255-17.067l34.056,17.067h25.534l34.043-17.067h17.031v-29.87l12.764-55.465l12.78-25.599
+                              l8.512-34.134l-17.028-72.539l-29.795-12.796l-21.292,4.264l-12.764-34.134l-42.559-4.268l-72.36-63.997l-4.254-98.145
+                              l17.021-42.66l-110.658,21.328l-21.286,38.402v46.937l-102.142,153.607h-68.102l-29.795-51.204l-63.848,46.937l-4.251,59.73
+                              l-46.816,12.803l-38.314,64.001l161.738-8.532L980.866,266.622z"></path>
+<path id="path10119" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1470.345,872.502v-38.402l-21.292-21.333l12.78-8.53l-8.516-42.672l38.311-38.397l25.527-12.803l8.516-21.333l-225.58-12.801
+                              v102.401l-12.776,4.272l4.261,21.333l-4.261,17.061v51.204l-4.248,21.333v25.601l-12.773,38.395v21.335l-12.771,25.612
+                              l89.385,8.529l12.773,21.335l12.767-38.405l63.841-12.791l25.543-25.612l51.074,8.542l8.5-8.542h38.311l-80.869-81.064
+                              L1470.345,872.502L1470.345,872.502z"></path>
+<path id="path10121" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1546.95,637.829h12.767l4.264-12.798l8.5-17.067l8.516-12.803l-17.015-38.4l-17.031-21.335l-2.936-6.886l-9.828-22.979
+                              l-4.264-29.87l-12.767,17.069l-170.248-17.069v17.069l-8.512,21.333v21.333l-17.025,38.402l-12.77,42.672l-17.025,21.328
+                              l12.771,12.801l-4.255,25.601l225.58,12.801l17.031-12.801l-8.516-17.064L1546.95,637.829L1546.95,637.829z"></path>
+<path id="path10123" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1606.54,266.622l-200.045-21.331l-4.265,42.666v115.205l-29.782,29.865l12.767,8.535l-38.308,34.131l170.248,17.069
+                              l12.767-17.069l4.264-21.333l38.294-51.198h25.543l-4.248-29.873l25.527-21.331l21.279-12.803l-8.5-21.331l8.5-17.07h17.031
+                              l4.264,8.535l8.5-21.331l-12.764-17.061l-25.531-34.137l-25.543,4.264l12.764,8.532L1606.54,266.622L1606.54,266.622z"></path>
+<path id="path10125" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1606.54,241.023l25.543-4.264l-8.516-46.94v-21.331l-17.028-25.605l-17.946-32.038l-11.849-27.692l4.251-34.134l-4.251-17.067
+                              l-140.456-12.803v29.87h-17.031l-4.251,12.803l4.251,59.733l-4.251,72.533l-8.512,51.204l200.045,21.331l12.764-17.067
+                              L1606.54,241.023L1606.54,241.023z"></path>
+<path id="path10127" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1576.745,31.951l17.028-42.669L1572.48-49.12l-8.5-34.134l97.897,4.264v-21.335l17.015-17.067l-34.046-4.264l-4.264-4.264
+                              l34.059-25.602l29.795-34.134l-34.059,17.067l-8.5-17.067h-55.338v8.535l-8.516,12.803l-17.028-4.271l-17.015,12.803
+                              l-17.031-4.264v-12.803l-93.633,4.264l17.028,72.539l-8.512,34.134l-12.78,25.599l-12.764,55.465L1576.745,31.951
+                              L1576.745,31.951z"></path>
+<path id="path10129" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1500.127,868.236l42.575,17.062l-4.264-21.327h12.764l55.338-21.338l38.307-8.534l17.031-8.537v-21.327l17.015-8.537v-46.934
+                              l25.543,34.137l-21.292-72.539l8.512-64.001l-127.679-21.333l-4.261,12.798h-12.767l-12.764,21.338l8.512,17.064l-17.028,12.801
+                              l-8.516,21.333l-25.527,12.803l-38.311,38.397l8.516,42.672l-12.78,8.53l21.292,21.333v38.402l8.503,4.266l21.279-8.53V868.236z"></path>
+<path id="path10131" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1529.922,475.692l4.264,29.87l12.764,29.865l17.031,21.335l17.015,38.4l-8.516,12.803l-8.5,17.067l127.676,21.333v-51.203
+                              l17.031-8.532l17.028-153.605l12.764-29.865l-29.792-42.671v-21.335l-21.279-17.067l4.248-4.264l-29.779-8.535l-4.264-8.535
+                              h-17.031l-8.5,17.07l8.5,21.331l-21.279,12.803l-25.531,21.331l4.251,29.873h-25.543l-38.294,51.198L1529.922,475.692
+                              L1529.922,475.692z"></path>
+<path id="path10133" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1623.567,168.487l102.148,17.067l12.764-8.535V-19.247l12.767-85.342l-42.559-4.264l-29.795-8.538l-17.015,17.067v21.335
+                              l-97.9-4.264l8.503,34.134l21.292,38.402l-17.028,42.669l4.251,17.067l-4.251,34.134l12.78,29.867l17.015,29.863
+                              L1623.567,168.487L1623.567,168.487z"></path>
+<path id="path10135" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1632.083,881.039l38.294,12.796v-17.067l51.074-12.796l12.78,21.327l51.074,12.804l46.81-12.804l12.777-17.062l-25.544-12.801
+                              l-29.792,8.537l-72.357-29.871l-38.307-38.4l-17.015,8.537v21.327l-17.031,8.537l-38.307,12.803l-51.074,17.069l76.618,51.198
+                              V881.039L1632.083,881.039z"></path>
+<path id="path10137" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1836.38,834.101l42.559-8.537l17.028-42.66l-8.513-21.339l-8.516-8.532v-12.796l38.308,21.328l25.543-42.668l-29.808-93.866
+                              l-59.573-17.067l-102.162-12.803l17.028,12.803l8.516,64.001l-25.543,46.932l4.264,55.469l17.028,25.605l12.767-17.067
+                              l12.764,34.129L1836.38,834.101L1836.38,834.101z"></path>
+<path id="path10139" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1751.247,595.162l102.162,12.803l25.53-166.403v-8.535l-29.795-12.804l-16.51-29.355h-25.543l-9.021-21.842l-29.795-8.535
+                              l-17.028,8.535l-42.559-8.535l29.795,42.672l-12.767,29.865l-17.028,153.605l29.795-8.537L1751.247,595.162L1751.247,595.162z"></path>
+<path id="path10141" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1670.377,287.956l-8.5,21.331l29.779,8.535l-4.248,4.264l21.279,17.067v21.335l42.559,8.535l17.028-8.535l29.795,8.535
+                              l9.021,21.842h25.543l16.51,29.355l29.795,12.803v8.537l17.028,12.798l38.311-21.335l34.043,8.537l12.767-8.537l8.513-29.865
+                              l8.516-21.333l25.53-8.538l-72.354-64.001l-293.678-38.392L1670.377,287.956L1670.377,287.956z"></path>
+<path id="path10143" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1632.083,236.758l25.531,34.137l293.678,38.392l93.646,21.335l-17.028-38.402h-17.028l-63.841-51.198l-12.764-25.602
+                              l-54.138-8.353l-154.424-21.514l-102.148-17.067v21.331L1632.083,236.758L1632.083,236.758z"></path>
+<path id="path10145" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1917.246,66.085l17.031-34.134l-17.031-29.873l8.516-51.198l-140.456-12.796l12.764-17.074l8.516-8.529l-29.795-25.602
+                              l-4.251,34.131l-21.292-25.599l-12.767,85.342v196.266l-12.764,8.535l153.223,21.335L1917.246,66.085L1917.246,66.085z"></path>
+<path id="path10147" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1785.306-61.917l140.456,12.796l8.516-8.532l140.442-4.264l4.265,29.863h25.543l97.884-166.4l21.279-34.137l8.516-64.001
+                              l-21.283-51.201l-25.541-8.532l-17.018,34.134l-29.792,4.268l-17.031,68.265h-17.015l-17.028,21.335v25.599l-17.031,4.271
+                              l4.251,34.134l-12.767,34.137l-34.043,25.592L1989.6-78.99l-59.587-42.666l-29.782,29.87l-29.808,8.532l-25.53-17.07
+                              l-38.308,12.806l-8.516,8.529L1785.306-61.917z"></path>
+<path id="path10149" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1912.981,625.032l29.808-8.53l4.251-8.537l59.59,21.333l4.248,21.333l29.795,8.537l8.516-72.536v-81.069l-21.279-21.34
+                              l-29.795-42.661l-17.028-8.535l-12.767,8.535l-34.043-8.535l-38.311,21.333l-17.028-12.796l-25.53,166.401L1912.981,625.032
+                              L1912.981,625.032z"></path>
+<path id="path10151" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1878.938,206.889l55.339,8.532l59.573,12.799l-4.251-34.134l25.543-4.268l8.502-21.331l21.292-25.605l25.531-25.592
+                              l21.279-21.335V83.152l17.031-8.535V61.82l14.854-9.574l2.174,9.574l-21.279-93.874h-25.543l-4.265-29.863l-140.442,4.264
+                              l-8.516,8.532l-8.516,51.198l17.031,29.873l-17.031,34.134L1878.938,206.889L1878.938,206.889z"></path>
+<path id="path10153" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2125.807,61.82l-2.174-9.574l-14.854,9.574v12.796l-17.031,8.535v12.803l-21.279,21.335l-25.531,25.592l-21.292,25.605
+                              l-8.502,21.331l-21.292,3.558l-4.248,0.71l4.248,34.134h17.031l4.261,8.538l76.605,12.796v-8.532l17.031-4.264l59.586,4.264
+                              l55.326-42.672l-63.838-106.667l-29.795-8.532L2125.807,61.82L2125.807,61.82z"></path>
+<path id="path10155" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2330.104,390.359l17.028-29.87l-21.279-21.335h42.559l-21.279-29.867h-46.823l17.028-17.067l12.767-4.264l-38.311-21.335
+                              l-21.279-51.201l-46.823-17.07l-55.326,42.672l-59.586-4.264l-17.031,4.264v8.532l-76.605-12.796l-4.264-8.538h-17.028
+                              l-59.573-12.799l12.764,25.602l63.838,51.198h17.031l17.028,38.402L2330.104,390.359z"></path>
+<path id="path10157" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1951.292,309.288l72.354,64.001l21.292-12.799l63.841,29.87l-4.251,12.803l17.015,38.4l21.279,34.131h4.264l29.795,38.402
+                              l25.531-8.532l8.512,17.067l38.311-25.602l-8.516-21.335l63.841-21.333l12.776-42.668l-42.559,8.53l29.782-17.061h21.292
+                              l4.251-12.803l-285.166-59.736L1951.292,309.288L1951.292,309.288z"></path>
+<path id="path10159" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2023.646,373.288l-25.53,8.538l-4.265,12.796l-4.251,8.537l-8.513,29.865l17.028,8.537l29.795,42.661l21.279,21.34v81.068
+                              l21.279-72.536l42.559,8.535l8.516-38.407l34.059,38.407l51.074,4.266l-4.264-21.333l-25.531,8.53l-29.795-38.402h-4.264
+                              l-21.279-34.129l-17.015-38.402l4.251-12.801l-63.841-29.873L2023.646,373.288L2023.646,373.288z"></path>
+<path id="path10161" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2113.027,522.629l187.282,51.2l17.028-17.067v-8.533l8.516-64.006h21.279v-38.395l-29.795,8.532l-17.028,29.863l-8.516,21.34
+                              l-4.251,38.402l4.251,12.798l-12.764-29.866l8.512-34.134l17.019-29.867l-63.841,12.798l8.516,21.335l-38.311,25.604
+                              l-8.512-17.069l4.264,21.333l-51.074-4.264l-34.059-38.408l-8.516,38.408V522.629z"></path>
+<path id="path10163" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2325.853,548.228l21.279-42.666v-21.34h-21.279l-8.516,64.006H2325.853z"></path>
+<path id="path10165" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2040.674,659.167l29.795,29.865l4.251-21.333l200.059,42.666h12.764l17.019-8.535v-21.335h21.292l-21.292-29.865l12.776-21.333
+                              l21.279-8.537l-21.279-25.599l-17.028-21.333l-187.282-51.2l-42.559-8.535l-21.279,72.536L2040.674,659.167z"></path>
+<path id="path10167" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2096.012,727.434v25.599l29.795,17.067l42.559-8.535l21.279,12.801l34.046,25.605l-17.015,34.129h12.764l29.795,46.938
+                              l97.897,25.601l4.251-76.805l17.028-12.801l12.767-34.129v-38.402l8.512-46.938l-8.512-25.599l29.792,8.53l17.031,21.335
+                              l4.251-4.266l-51.074-46.934v21.335l-51.074,8.53h-25.543v21.335l-17.015,8.535h-12.767l-200.059-42.666l-4.251,21.333
+                              L2096.012,727.434L2096.012,727.434z"></path>
+<path id="path10169" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2317.337,556.762l-17.028,17.067l17.028,21.333l21.279,25.599l-21.279,8.537l-12.776,21.333l21.292,29.865h4.251l51.074-8.53
+                              v-4.266v4.266l-12.767-34.136l12.767-29.865l-21.283-72.537l-34.043,12.801L2317.337,556.762L2317.337,556.762z"></path>
+<path id="path10171" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2347.132,906.64l55.326,21.333V782.904h-21.279l-12.767,34.129l-17.028,12.801L2347.132,906.64L2347.132,906.64z"></path>
+<path id="path10173" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2381.178,744.503l68.102,8.53l4.251-34.136l-63.841-21.333L2381.178,744.503z"></path>
+<path id="path10175" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2402.458,782.904l68.102,17.067l25.531-29.871l12.78,4.266l8.513,8.538v-21.339l-8.513-8.532h-25.547l-17.015,8.532
+                              l-17.028-8.532l-68.102-8.53v38.402H2402.458L2402.458,782.904z"></path>
+<path id="path10177" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2483.323,753.033l-29.792-34.136l-4.251,34.136l17.028,8.532L2483.323,753.033L2483.323,753.033z"></path>
+<path id="path10179" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2402.458,953.568l25.543,4.263l38.308-115.198l4.251-42.661l-68.102-17.067V953.568z"></path>
+<path id="path10181" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M2470.56,1107.172l21.279,8.542l17.031-4.277l25.531-93.866l34.043-25.599v-34.141l-42.559-21.328l-8.502-17.067l-46.823-34.137
+                              l-4.251-42.666l-38.308,115.198l12.764,68.281l-8.512,55.461l21.279,29.863L2470.56,1107.172L2470.56,1107.172z"></path>
+<path id="path10183" fill="#D3D3D3" stroke="#FFFFFF" stroke-width="1.1389" stroke-linecap="square" stroke-miterlimit="10" d="
+                              M1930.013-121.656L1989.6-78.99L1930.013-121.656z"></path>
+</g>
+</g>
+</g>
+<g id="CITIES">
+<g id="CITIES_1_">
+</g>
+</g>
+
+
+<g class="city-dot" data-city-name="Albuquerque" onmouseover="mouseOver1()" onmouseout="mouseOut1()">
+<circle id="1" style="fill: black; opacity:0.5" cx="220.562" cy="291.927" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Atlanta"  onmouseover="mouseOver2()" value="Atlanta" onmouseout="mouseOut2()">
+<circle id="2" style="fill: black; opacity:0.5" cx="585.004" cy="298.446" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Austin"  onmouseover="mouseOver3()" onmouseout="mouseOut3()">
+<circle id="3" style="fill: black; opacity:0.5" cx="377.257" cy="379.609" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Boston" onmouseover="mouseOver4()" onmouseout="mouseOut4()">
+<circle id="4" style="fill: black; opacity:0.5" cx="741.168" cy="116.23" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Charlotte" onmouseover="mouseOver5()" onmouseout="mouseOut5()">
+<circle id="5" style="fill: black; opacity:0.5" cx="631.994" cy="265.592" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Colorado Springs"  onmouseover="mouseOver6()" onmouseout="mouseOut6()">
+<circle id="6" style="fill: black; opacity:0.5" cx="290.431" cy="234.324" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Columbus" onmouseover="mouseOver7()" onmouseout="mouseOut7()">
+<circle id="7" style="fill: black; opacity:0.5" cx="585.544" cy="183.57" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Dallas"  onmouseover="mouseOver8()" onmouseout="mouseOut8()">
+<circle id="8" style="fill: black; opacity:0.5" cx="400.08" cy="344.868" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Denver" onmouseover="mouseOver9()" onmouseout="mouseOut9()">
+<circle id="9" style="fill: black; opacity:0.5" cx="284.045" cy="207.691" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Fresno"onmouseover="mouseOver10()" onmouseout="mouseOut10()">
+<circle id="10" style="fill: black; opacity:0.5" cx="61.392" cy="225.251" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Houston" onmouseover="mouseOver11()" onmouseout="mouseOut11()">
+<circle id="11" style="fill: black; opacity:0.5" cx="418.6" cy="398.81" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Kansas City" onmouseover="mouseOver12()" onmouseout="mouseOut12()">
+<circle id="12" style="fill: black; opacity:0.5" cx="422.586" cy="215.75" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Las Vegas"  onmouseover="mouseOver13()" onmouseout="mouseOut13()">
+<circle id="13" style="fill: black; opacity:0.5" cx="123.16" cy="256.726" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Long Beach"  onmouseover="mouseOver14()" onmouseout="mouseOut14()">
+<circle id="14" style="fill: black; opacity:0.5" cx="45.109" cy="269.755" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Miami"  onmouseover="mouseOver15()" onmouseout="mouseOut15()">
+<circle id="15" style="fill: black; opacity:0.5" cx="664.503" cy="445.01" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Milwaukee"  onmouseover="mouseOver16()" onmouseout="mouseOut16()">
+<circle id="16" style="fill: black; opacity:0.5" cx="501.113" cy="139.803" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Minneapolis"  onmouseover="mouseOver17()" onmouseout="mouseOut17()">
+<circle id="17" style="fill: black; opacity:0.5" cx="434.716" cy="112.344" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Nashville"  onmouseover="mouseOver18()" onmouseout="mouseOut18()">
+<circle id="18" style="fill: black; opacity:0.5" cx="535.592" cy="261.072" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="New York City" onmouseover="mouseOver19()" onmouseout="mouseOut19()">
+<circle id="19" style="fill: black; opacity:0.5" cx="714.354" cy="144.57" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Oklahoma City"  onmouseout="mouseOut20()">
+<circle id="20" style="fill: black; opacity:0.5" cx="392.58" cy="271.04" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Omaha" onmouseover="mouseOver21()" onmouseout="mouseOut21()">
+<circle id="21" style="fill: black; opacity:0.5" cx="400.08" cy="180.059" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Philadelphia" onmouseover="mouseOver22()" onmouseout="mouseOut22()">
+<circle id="22" style="fill: black; opacity:0.5" cx="690.701" cy="160.444" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Phoenix"  onmouseover="mouseOver23()" onmouseout="mouseOut23()">
+<circle id="23" style="fill: black; opacity:0.5" cx="156.358" cy="311.397" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Portland" onmouseover="mouseOver24()" onmouseout="mouseOut24()">
+<circle id="24" style="fill: black; opacity:0.5" cx="45.109" cy="63.664" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Raleigh" onmouseover="mouseOver25()" onmouseout="mouseOut25()">
+<circle id="25" style="fill: black; opacity:0.5" cx="662.003" cy="240.906" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Sacramento" onmouseover="mouseOver26()" onmouseout="mouseOut26()">
+<circle id="26" style="fill: black; opacity:0.5" cx="28.464" cy="170.564" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="San Antonio"  onmouseover="mouseOver27()" onmouseout="mouseOut27()">
+<circle id="27" style="fill: black; opacity:0.5" cx="360.019" cy="404.977" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="San Diego" onmouseover="mouseOver28()" onmouseout="mouseOut28()">
+<circle id="28" style="fill: black; opacity:0.5" cx="76.392" cy="303.572" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="San Francisco"  onmouseover="mouseOver29()" onmouseout="mouseOut29()">
+<circle id="29" style="fill: black; opacity:0.5" cx="20" cy="197.5" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="San Jose"  onmouseover="mouseOver30()" onmouseout="mouseOut30()">
+<circle id="30" style="fill: black; opacity:0.5" cx="20.964" cy="215.75" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Seattle"  onmouseover="mouseOver31()" onmouseout="mouseOut31()">
+<circle id="31" style="fill: black; opacity:0.5" cx="68.892" cy="23.582" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Tucson" onmouseover="mouseOver32()" onmouseout="mouseOut32()">
+<circle id="32" style="fill: black; opacity:0.5" cx="172.681" cy="337.368" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Tulsa" onmouseover="mouseOver33()" onmouseout="mouseOut33()">
+<circle id="33" style="fill: black; opacity:0.5" cx="411.246" cy="262.126" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Virginia Beach"  onmouseover="mouseOver34()" onmouseout="mouseOut34()">
+<circle id="34" style="fill: black; opacity:0.5" cx="695.201" cy="219.342" r="20" original-title=""></circle>
+</g>
+
+<g class="city-dot" data-city-name="Washington, DC" onmouseover="mouseOver35()" onmouseout="mouseOut35()">
+<circle id="35" style="fill: black; opacity:0.5" cx="664.394" cy="185.497" r="20" original-title=""></circle>
+</g>
+
+</svg>
+        <!-- /map -->
+
+
+    </div>
+
+</div>
+
+</div>
+<!-- /#wrapper -->
+
+<script src="../js/script.js"></script>
+<script src="../js/bars.js"></script>
+
+<!-- jQuery -->
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="../dist/js/sb-admin-2.js"></script>
+<script src="../checkbox/js/svgcheckbx.js"></script>
+
+
+</body>
+
+</html>
