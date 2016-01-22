@@ -68,7 +68,6 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="../js/map.js"></script>
 
 
     <link rel="shortcut icon" href="../favicon.ico">
@@ -95,61 +94,61 @@
                                                                              value="Public Transportation Usage"><label
                                 for="cbl1">Public Transportation Usage</label></li>
                         <li><span style='background:#FFC8E3;'></span><input id="cbl2" name="cbl2" type="checkbox"
-                                                                            value="Congestion"><label
-                                for="cbl2">Congestion</label></li>
+                                                                            value="Congestion Level"><label
+                                for="cbl2">Congestion Level</label></li>
                         <li><span style='background:#F0CBFE;'></span><input id="cbl3" name="cbl3" type="checkbox"
                                                                             value="Walking Score"><label
                                 for="cbl3">Walking Score</label></li>
 
                         <li style="line-height:20px">Cost of living</li>
                         <li><span style='background:#CAFFD8;'></span><input id="cbl4" name="cbl4" type="checkbox"
-                                                                            value="2Bed Apartment Rent"><label
-                                for="cbl4">2Bed Apartment Rent</label></li>
+                                                                            value="2Bed Apartment Rent/mon"><label
+                                for="cbl4">2Bed Apartment Rent/mon</label></li>
                         <li><span style='background:#8FFEDD;'></span><input id="cbl5" name="cbl5" type="checkbox"
-                                                                            value="Gas per Gallon"><label
-                                for="cbl5">[$] Gas/Gallon</label></li>
+                                                                            value="Cost of Gas/gal"><label
+                                for="cbl5">Cost of Gas/gal</label></li>
                         <li><span style='background:#C9DECB;'></span><input id="cbl6" name="cbl6" type="checkbox"
-                                                                            value="Electricity"><label
-                                for="cbl6">[$] Electricity</label></li>
+                                                                            value="Cost of Electricity/mon"><label
+                                for="cbl6">Cost of Electricity/mon</label></li>
                         <li><span style='background:#EDEF85;'></span> <input id="cbl7" name="cbl7" type="checkbox"
-                                                                             value="Grocery"><label
-                                for="cbl7">[$] Grocery</label></li>
+                                                                             value="Cost of Grocery/mon"><label
+                                for="cbl7">Cost of Grocery/mon</label></li>
                         <li><span style='background:#A5FFA8;'></span><input id="cbl8" name="cbl8" type="checkbox"
-                                                                            value="Internet"><label
-                                for="cbl8">[$] Internet</label></li>
+                                                                            value="Cost of Internet/mon"><label
+                                for="cbl8">Cost of Internet/mon</label></li>
 
                         <li style="line-height:20px">Employment</li>
                         <li><span style='background:#FFF06A;'></span><input id="cbl9" name="cbl9" type="checkbox"
                                                                             value="Average Salary"><label
-                                for="cbl9">Avg Salary</label></li>
+                                for="cbl9">Average Salary</label></li>
                         <li><span style='background:#FFCFA4;'></span><input id="cbl10" name="cbl10" type="checkbox"
-                                                                            value="Unemployment Rate"><label
+                                                                            value="Employment Rate"><label
                                 for="cbl10">Employment Rate</label></li>
 
                         <li style="line-height:20px">Living quality</li>
                         <li><span style='background:#DDCEFF;'></span><input id="cbl11" name="cbl11" type="checkbox"
-                                                                            value="Music Venues per 100k ppl"><label
+                                                                            value="Music Venues/100k ppl"><label
                                 for="cbl11">Music Venues/100k ppl</label></li>
                         <li><span style='background:#B8E2EF;'></span><input id="cbl12" name="cbl12" type="checkbox"
-                                                                            value="Cheap Takeouts per 100k ppl"><label
+                                                                            value="Cheap Takeouts/100k ppl"><label
                                 for="cbl12">Cheap Takeouts/100k ppl</label></li>
                         <li><span style='background:#CEDEF4;'></span> <input id="cbl13" name="cbl13" type="checkbox"
-                                                                             value="Laundromats per 100 ppl"><label
+                                                                             value="Laundromats/100k ppl"><label
                                 for="cbl13">Laundromats/100k ppl</label></li>
                         <li><span style='background:#BBEBFF'></span><input id="cbl14" name="cbl14" type="checkbox"
-                                                                           value="Coffee shops per 100 ppl"><label
+                                                                           value="Coffee shops/100k ppl"><label
                                 for="cbl14">Coffee shops/100k ppl</label></li>
 
-                        <li style="line-height:20px">Neiborhood</li>
+                        <li style="line-height:20px">Neighborhood</li>
                         <li><span style='background:#DFDFDF;'></span><input id="cbl15" name="cbl15" type="checkbox"
-                                                                            value="Young and Single"><label
-                                for="cbl15">Young and Single</label></li>
+                                                                            value="Young, Single Population (%)"><label
+                                for="cbl15">Young, Single Population (%)</label></li>
                         <li><span style='background:#B3B5C1;'></span><input id="cbl16" name="cbl16" type="checkbox"
-                                                                            value="Crime"><label
-                                for="cbl16">Crime</label></li>
+                                                                            value="Safety"><label
+                                for="cbl16">Safety</label></li>
                         <li><span style='background:#C0C4B9;'></span><input id="cbl17" name="cbl17" type="checkbox"
-                                                                            value="Events"><label
-                                for="cbl17">Events</label></li>
+                                                                            value="Upcoming Events"><label
+                                for="cbl17">Upcoming Events</label></li>
                     </ul>
                 </div>
             </div>
@@ -249,7 +248,6 @@
             </style>
 
 
-            <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 
         </div>
@@ -341,7 +339,7 @@
         </form>
 
         <!-- map -->
-        <svg version="1.1" baseProfile="basic" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" viewBox="0 0 771.103 469.967" xml:space="preserve">
+        <svg version="1.1" id="map" baseProfile="basic" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%" viewBox="0 0 771.103 469.967" xml:space="preserve">
 <g id="Laag_1">
 <g id="g10081" transform="matrix(1.25,0,0,-1.25,0,343.1125)">
 <g id="g10083" transform="scale(0.24,0.24)">
@@ -530,16 +528,28 @@
 </g>
 
 
-<g class="city-dot" data-city-name="Albuquerque" onmouseover="mouseOver1()" onmouseout="mouseOut1()">
+<g class="city-dot" data-city-name="Albuquerque" onmouseover="mouseOver1()" onmouseout="mouseOut1()" >
 <circle id="1" style="fill: black; opacity:0.5" cx="220.562" cy="291.927" r="20" original-title=""></circle>
+    <rect style="fill:white; opacity:.8" x="219" y = "262" width="160" height="31" visibility="hidden">
+            <set attributeName="visibility" from="hidden" to="visible" begin="1.mouseover" end="1.mouseout"/>
+    </rect>
+    <text id="thepopup" x="220" y="288" font-size="30" fill="black" visibility="hidden">Albuquerue
+    <set attributeName="visibility" from="hidden" to="visible" begin="1.mouseover" end="1.mouseout"/>
+  </text>
 </g>
 
 <g class="city-dot" data-city-name="Atlanta"  onmouseover="mouseOver2()" value="Atlanta" onmouseout="mouseOut2()">
 <circle id="2" style="fill: black; opacity:0.5" cx="585.004" cy="298.446" r="20" original-title=""></circle>
+    <text id="thepopup" x="590" y="298" font-size="30" fill="black" visibility="hidden">Atlanta
+    <set attributeName="visibility" from="hidden" to="visible" begin="2.mouseover" end="2.mouseout"/>
+  </text>
 </g>
 
 <g class="city-dot" data-city-name="Austin"  onmouseover="mouseOver3()" onmouseout="mouseOut3()">
 <circle id="3" style="fill: black; opacity:0.5" cx="377.257" cy="379.609" r="20" original-title=""></circle>
+    <text id="thepopup" x="590" y="298" font-size="30" fill="black" visibility="hidden">Atlanta
+    <set attributeName="visibility" from="hidden" to="visible" begin="2.mouseover" end="2.mouseout"/>
+  </text>
 </g>
 
 <g class="city-dot" data-city-name="Boston" onmouseover="mouseOver4()" onmouseout="mouseOut4()">
@@ -680,9 +690,11 @@
 
 </div>
 <!-- /#wrapper -->
-
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 <script src="../js/script.js"></script>
 <script src="../js/bars.js"></script>
+<script src="../js/map.js"></script>
+
 
 <!-- jQuery -->
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>

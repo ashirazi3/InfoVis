@@ -6,6 +6,7 @@ function mouseOut() {
   document.getElementById("myCircle").style.opacity = "0.5";
 }
 
+
 function colorRed(id){
     $("#"+id).css("fill","#009688");
 }
@@ -46,7 +47,11 @@ function changeColor2(){
 }
 function mouseOver2() {
     document.getElementById("2").style.opacity = "0.8";
+
+
 }
+//    <rect  x="219" y = "262" width="158" height="31"></rect>
+
 function mouseOut2() {
   document.getElementById("2").style.opacity = "0.5";
 }

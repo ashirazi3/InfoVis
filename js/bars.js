@@ -35,7 +35,7 @@ var highlight = [];
 
 var svg = d3.select("#barchart").append("svg")
     .attr("width", width+380 + margin2.left + margin2.right)
-    .attr("height", height+75 + margin2.top + margin2.bottom)
+    .attr("height", height+105 + margin2.top + margin2.bottom)
     .append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
@@ -168,12 +168,16 @@ function reset233() {
             });
         state.append("text")
             .attr("y", -5).attr("transform", "rotate(90)")
-            .attr("x", height/7 - 20)
+            .attr("x", height/7 - 35)
             .attr("dy", ".35em")
             .style("text-anchor", "start").style("fill",function(d){
                 for (i=0;i<selectC.length;i++)
                 {if (selectC[i]==d.City)
                     return "#009688";}})
+            .style("font-size",function(d){
+                for (i=0;i<selectC.length;i++)
+                {if (selectC[i]==d.City)
+                    return "13.5";}})
             .text(function (d) {
                 return d.City;
             });
@@ -213,9 +217,10 @@ function difference2(data) {
     for (var m = 0; m < 35; m++) {
         for (var i = 1; i < keys.length - 2; i++) {
             var key = keys[i];
-            console.log(key);
-            console.log(data[key]);
-            console.log(globalInput[m]);
+            console.log("name"+ key);
+            console.log("select value "+data[key]);
+            console.log("city "+globalInput[m]);
+            console.log("city value "+globalInput[m][key]);
             dif = dif + (data[key] - globalInput[m][key]) * (data[key] - globalInput[m][key]);
             console.log("dif" + dif);
         }
@@ -345,7 +350,7 @@ function difference2(data) {
             });
         state.append("text")
             .attr("y", -5).attr("transform", "rotate(90)")
-            .attr("x", height/7 - 20)
+            .attr("x", height/7 - 35)
             .attr("dy", ".35em")
             .style("text-anchor", "start").style("fill",function(d){
                 for (i=0;i<selectC.length;i++)
@@ -356,6 +361,13 @@ function difference2(data) {
             }).attr("fill", function (d, i) {
                 console.log("flag1" + opacity[i]);
                 if (opacity[i] == 0) return "red";
+            }).attr("font-size", function (d, i) {
+                console.log("flag1" + opacity[i]);
+
+                if (opacity[i] == 0) return "14";
+                for (i=0;i<selectC.length;i++)
+                {if (selectC[i]==d.City)
+                    return "13.5";}
             });
 
 
@@ -517,7 +529,7 @@ function difference(data) {
             });
         state.append("text")
             .attr("y", -5).attr("transform", "rotate(90)")
-            .attr("x", height/7 - 20)
+            .attr("x", height/7 - 35)
             .attr("dy", ".35em").style("fill",function(d){
                 for (i=0;i<selectC.length;i++)
                 {if (selectC[i]==d.City)
@@ -528,6 +540,13 @@ function difference(data) {
             }).attr("fill", function (d, i) {
                 console.log("flag1" + opacity[i]);
                 if (opacity[i] == 0) return "red";
+            }).attr("font-size", function (d, i) {
+                console.log("flag1" + opacity[i]);
+
+                if (opacity[i] == 0) return "14";
+                for (i=0;i<selectC.length;i++)
+                {if (selectC[i]==d.City)
+                    return "13.5";}
             });
 
         var legend = svg.selectAll(".legend")
@@ -629,7 +648,7 @@ var sortBars = function () {
             .enter().append("g")
             .attr("class", "g")
             .attr("transform", function (d, i) {
-                var xv = x.rangeBand() * i + (width - 300 - x.rangeBand() * 35) * d.total / maxtotal;
+                var xv = x.rangeBand() * i + (width - 400 - x.rangeBand() * 35) * d.total / maxtotal;
                 console.log(maxtotal);
                 console.log(d.total);
                 console.log(x(d.City) + " " + d.total + " " + d.City + " " + d.ages[1].y0);
@@ -663,7 +682,7 @@ var sortBars = function () {
             });
         state.append("text")
             .attr("y", -5).attr("transform", "rotate(90)")
-            .attr("x", height/7 - 20)
+            .attr("x", height/7 - 35)
             .attr("dy", ".35em")
             .style("text-anchor", "start").style("fill",function(d){
                 for (i=0;i<selectC.length;i++)
@@ -671,7 +690,10 @@ var sortBars = function () {
                     return "#009688";}})
             .text(function (d) {
                 return d.City;
-            });
+            }).style("font-size",function(d){
+                for (i=0;i<selectC.length;i++)
+                {if (selectC[i]==d.City)
+                    return "13.5";}});
 
 
         var legend = svg.selectAll(".legend")

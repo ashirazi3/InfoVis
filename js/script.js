@@ -1,3 +1,6 @@
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 ////////////////////////////////////////////////////////////
 //////////////////////// Set-up ////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -45,9 +48,11 @@ var allColors = ["#FFA8A8", "#FFC8E3", "#F0CBFE ", "#CAFFD8", "#8FFEDD", "#C9DEC
 //    pullOutSize = (mobileScreen ? 20 : 50),
 //    opacityDefault = 0.7, //default opacity of chords
 //    opacityLow = 0.02; //hover opacity of those chords not hovered over
-var selectA = ["Public Transportation Usage", "Congestion", "Walking Score"];
+var selectA = ["Public Transportation Usage", "Congestion Level", "Walking Score"];
 var selectC = ["Albuquerque", "Atlanta", "Austin"];
 
+var inverseNum = ["Congestion Level","2Bed Apartment Rent/mon","Cost of Gas/gal", "Cost of Electricity/mon", "Cost of Grocery/mon",
+    "Cost of Internet/mon","Employment Rate","Safety"];
 ////////////////////////////////////////////////////////////
 ////////////////////////// Data ////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -58,22 +63,22 @@ $.getJSON("../js/data.json", function (data) {
 
     for (var i = 0; i < data.length; i++) {
         db[data[i]["City"]] = [];
-        db[data[i]["City"]]["Events"] = data[i]["Events"];
-        db[data[i]["City"]]["Crime"] = data[i]["Crime"];
-        db[data[i]["City"]]["Young and Single"] = data[i]["Young and Single"];
-        db[data[i]["City"]]["Coffee shops per 100 ppl"] = data[i]["Coffee shops per 100 ppl"];
-        db[data[i]["City"]]["Laundromats per 100 ppl"] = data[i]["Laundromats per 100 ppl"];
-        db[data[i]["City"]]["Cheap Takeouts per 100k ppl"] = data[i]["Cheap Takeouts per 100k ppl"];
-        db[data[i]["City"]]["Music Venues per 100k ppl"] = data[i]["Music Venues per 100k ppl"];
-        db[data[i]["City"]]["Unemployment Rate"] = data[i]["Unemployment Rate"];
+        db[data[i]["City"]]["Upcoming Events"] = data[i]["Upcoming Events"];
+        db[data[i]["City"]]["Safety"] = data[i]["Safety"];
+        db[data[i]["City"]]["Young, Single Population (%)"] = data[i]["Young, Single Population (%)"];
+        db[data[i]["City"]]["Coffee shops/100k ppl"] = data[i]["Coffee shops/100k ppl"];
+        db[data[i]["City"]]["Laundromats/100k ppl"] = data[i]["Laundromats/100k ppl"];
+        db[data[i]["City"]]["Cheap Takeouts/100k ppl"] = data[i]["Cheap Takeouts/100k ppl"];
+        db[data[i]["City"]]["Music Venues/100k ppl"] = data[i]["Music Venues/100k ppl"];
+        db[data[i]["City"]]["Employment Rate"] = data[i]["Employment Rate"];
         db[data[i]["City"]]["Average Salary"] = data[i]["Average Salary"];
-        db[data[i]["City"]]["Internet"] = data[i]["Internet"];
-        db[data[i]["City"]]["Grocery"] = data[i]["Grocery"];
-        db[data[i]["City"]]["Electricity"] = data[i]["Electricity"];
-        db[data[i]["City"]]["Gas per Gallon"] = data[i]["Gas per Gallon"];
-        db[data[i]["City"]]["2Bed Apartment Rent"] = data[i]["2Bed Apartment Rent"];
+        db[data[i]["City"]]["Cost of Internet/mon"] = data[i]["Cost of Internet/mon"];
+        db[data[i]["City"]]["Cost of Grocery/mon"] = data[i]["Cost of Grocery/mon"];
+        db[data[i]["City"]]["Cost of Electricity/mon"] = data[i]["Cost of Electricity/mon"];
+        db[data[i]["City"]]["Cost of Gas/gal"] = data[i]["Cost of Gas/gal"];
+        db[data[i]["City"]]["2Bed Apartment Rent/mon"] = data[i]["2Bed Apartment Rent/mon"];
         db[data[i]["City"]]["Walking Score"] = data[i]["Walking Score"];
-        db[data[i]["City"]]["Congestion"] = data[i]["Congestion"];
+        db[data[i]["City"]]["Congestion Level"] = data[i]["Congestion Level"];
         db[data[i]["City"]]["Public Transportation Usage"] = data[i]["Public Transportation Usage"];
 
     }
@@ -167,8 +172,15 @@ $.getJSON("../js/data.json", function (data) {
             normalizeDB[city] = [];
             for (var attribute in db[city]) {
                 //console.log("pre normal", maxList[attribute]);
+                //console.log("attribute is", db[city][attribute]);
+                //console.log($.inArray(attribute, inverseNum))
+                if($.inArray(attribute, inverseNum)>-1){
+                    console.log("inversing");
+                    normalizeDB[city][attribute] = 1 - parseFloat(normalize(db[city][attribute], minList[attribute], maxList[attribute]));
+                }else{
+                    //console.log("not inversing ", db[city][attribute])
                 normalizeDB[city][attribute] = normalize(db[city][attribute], minList[attribute], maxList[attribute]);
-                //normalizeDB[city][attribute] = 5;
+                }
             }
             //console.log(db[key]);
         }
@@ -263,7 +275,7 @@ $.getJSON("../js/data.json", function (data) {
 
     function insertEmptyStroke(names, matrix, emptyStroke) {
         var newM = matrix;
-        console.log("matrix before", matrix)
+        //console.log("matrix before", matrix)
         for (var i = 0; i < names.length; i++) {
             if (names[i] == "") {
                 if (i != names.length - 1) {
@@ -273,15 +285,15 @@ $.getJSON("../js/data.json", function (data) {
                 }
             }
         }
-        console.log("new M", newM);
+        //console.log("new M", newM);
         return newM;
     }
 
 
     var Names = getNames(selectC, selectA);
-    console.log("Names are", Names);
+    //console.log("Names are", Names);
     var matrix = createMatrix(Names, allCities, allAttributes);
-    console.log(getTotalNumber(matrix));
+    //console.log(getTotalNumber(matrix));
     //console.log(matrix);
     var respondents = Math.ceil(getTotalNumber(matrix)), //Total number of respondents (i.e. the number that makes up the total group)
         emptyPerc = .15, //What % of the circle should become empty
@@ -331,37 +343,37 @@ $.getJSON("../js/data.json", function (data) {
             if ($.inArray(Names[i], selectA) > -1) {
                 if (Names[i] == "Public Transportation Usage") {
                     return allColors[0]
-                } else if (Names[i] == "Congestion") {
+                } else if (Names[i] == "Congestion Level") {
                     return allColors[1]
                 } else if (Names[i] == "Walking Score") {
                     return allColors[2]
-                } else if (Names[i] == "2Bed Apartment Rent") {
+                } else if (Names[i] == "2Bed Apartment Rent/mon") {
                     return allColors[3]
-                } else if (Names[i] == "Gas per Gallon") {
+                } else if (Names[i] == "Cost of Gas/gal") {
                     return allColors[4]
-                } else if (Names[i] == "Electricity") {
+                } else if (Names[i] == "Cost of Electricity/mon") {
                     return allColors[5]
-                } else if (Names[i] == "Grocery") {
+                } else if (Names[i] == "Cost of Grocery/mon") {
                     return allColors[6]
-                } else if (Names[i] == "Internet") {
+                } else if (Names[i] == "Cost of Internet/mon") {
                     return allColors[7]
                 } else if (Names[i] == "Average Salary") {
                     return allColors[8]
-                } else if (Names[i] == "Unemployment Rate") {
+                } else if (Names[i] == "Employment Rate") {
                     return allColors[9]
-                } else if (Names[i] == "Music Venues per 100k ppl") {
+                } else if (Names[i] == "Music Venues/100k ppl") {
                     return allColors[10]
-                } else if (Names[i] == "Cheap Takeouts per 100k ppl") {
+                } else if (Names[i] == "Cheap Takeouts/100k ppl") {
                     return allColors[11]
-                } else if (Names[i] == "Laundromats per 100 ppl") {
+                } else if (Names[i] == "Laundromats/100k ppl") {
                     return allColors[12]
-                } else if (Names[i] == "Coffee shops per 100 ppl") {
+                } else if (Names[i] == "Coffee shops/100k ppl") {
                     return allColors[13]
-                } else if (Names[i] == "Young and Single") {
+                } else if (Names[i] == "Young, Single Population (%)") {
                     return allColors[14]
-                } else if (Names[i] == "Crime") {
+                } else if (Names[i] == "Safety") {
                     return allColors[15]
-                } else if (Names[i] == "Events") {
+                } else if (Names[i] == "Upcoming Events") {
                     return allColors[16]
                 }
             }else if($.inArray(Names[i], selectC)>-1){
@@ -370,42 +382,42 @@ $.getJSON("../js/data.json", function (data) {
                 return "none";
             }        })
         .style("fill", function (d, i) {
-            console.log("this one is", Names[i]);
-            console.log(Names[i]);
+            //console.log("this one is", Names[i]);
+            //console.log(Names[i]);
             if ($.inArray(Names[i], selectA) > -1) {
                 if (Names[i] == "Public Transportation Usage") {
                     return allColors[0]
-                } else if (Names[i] == "Congestion") {
+                } else if (Names[i] == "Congestion Level") {
                     return allColors[1]
                 } else if (Names[i] == "Walking Score") {
                     return allColors[2]
-                } else if (Names[i] == "2Bed Apartment Rent") {
+                } else if (Names[i] == "2Bed Apartment Rent/mon") {
                     return allColors[3]
-                } else if (Names[i] == "Gas per Gallon") {
+                } else if (Names[i] == "Cost of Gas/gal") {
                     return allColors[4]
-                } else if (Names[i] == "Electricity") {
+                } else if (Names[i] == "Cost of Electricity/mon") {
                     return allColors[5]
-                } else if (Names[i] == "Grocery") {
+                } else if (Names[i] == "Cost of Grocery/mon") {
                     return allColors[6]
-                } else if (Names[i] == "Internet") {
+                } else if (Names[i] == "Cost of Internet/mon") {
                     return allColors[7]
                 } else if (Names[i] == "Average Salary") {
                     return allColors[8]
-                } else if (Names[i] == "Unemployment Rate") {
+                } else if (Names[i] == "Employment Rate") {
                     return allColors[9]
-                } else if (Names[i] == "Music Venues per 100k ppl") {
+                } else if (Names[i] == "Music Venues/100k ppl") {
                     return allColors[10]
-                } else if (Names[i] == "Cheap Takeouts per 100k ppl") {
+                } else if (Names[i] == "Cheap Takeouts/100k ppl") {
                     return allColors[11]
-                } else if (Names[i] == "Laundromats per 100 ppl") {
+                } else if (Names[i] == "Laundromats/100k ppl") {
                     return allColors[12]
-                } else if (Names[i] == "Coffee shops per 100 ppl") {
+                } else if (Names[i] == "Coffee shops/100k ppl") {
                     return allColors[13]
-                } else if (Names[i] == "Young and Single") {
+                } else if (Names[i] == "Young, Single Population (%)") {
                     return allColors[14]
-                } else if (Names[i] == "Crime") {
+                } else if (Names[i] == "Safety") {
                     return allColors[15]
-                } else if (Names[i] == "Events") {
+                } else if (Names[i] == "Upcoming Events") {
                     return allColors[16]
                 }
             }else if($.inArray(Names[i], selectC)>-1){
@@ -444,7 +456,7 @@ $.getJSON("../js/data.json", function (data) {
             return "translate(" + (c[0] + d.pullOutSize) + "," + c[1] + ")" + "rotate(" + (d.angle * 180 / Math.PI - 90) + ")" + "translate(" + 20 + ",0)" + (d.angle > Math.PI ? "rotate(180)" : "")
         })
         .attr("color", function(d,i){
-            console.log("colorcheck", Names[i]);
+            //console.log("colorcheck", Names[i]);
             if($.inArray(Names[i], selectC)>-1){
                 return "#887390"
             }
@@ -453,7 +465,7 @@ $.getJSON("../js/data.json", function (data) {
             return Names[i];
         })
         .attr("fill", function(d,i){
-            console.log("colorcheck", Names[i]);
+            //console.log("colorcheck", Names[i]);
             if($.inArray(Names[i], selectC)>-1){
                 return "#009688"
             }
@@ -464,48 +476,48 @@ $.getJSON("../js/data.json", function (data) {
     //////////////////// Draw inner chords /////////////////////
     ////////////////////////////////////////////////////////////
 
-    console.log(chord.chords);
+    //console.log(chord.chords);
     var chords = wrapper.selectAll("path.chord")
         .data(chord.chords)
         .enter().append("path")
         .attr("class", "chord")
         .style("stroke", "none")
         .style("fill", function (d, i) {
-            console.log("this one is", Names[i]);
-            console.log(Names[d.target.index]);
+            //console.log("this one is", Names[i]);
+            //console.log(Names[d.target.index]);
             if (Names[d.target.index] == "Public Transportation Usage") {
                 return allColors[0]
-            } else if (Names[d.target.index] == "Congestion") {
+            } else if (Names[d.target.index] == "Congestion Level") {
                 return allColors[1]
             } else if (Names[d.target.index] == "Walking Score") {
                 return allColors[2]
-            } else if (Names[d.target.index] == "2Bed Apartment Rent") {
+            } else if (Names[d.target.index] == "2Bed Apartment Rent/mon") {
                 return allColors[3]
-            } else if (Names[d.target.index] == "Gas per Gallon") {
+            } else if (Names[d.target.index] == "Cost of Gas/gal") {
                 return allColors[4]
-            } else if (Names[d.target.index] == "Electricity") {
+            } else if (Names[d.target.index] == "Cost of Electricity/mon") {
                 return allColors[5]
-            } else if (Names[d.target.index] == "Grocery") {
+            } else if (Names[d.target.index] == "Cost of Grocery/mon") {
                 return allColors[6]
-            } else if (Names[d.target.index] == "Internet") {
+            } else if (Names[d.target.index] == "Cost of Internet/mon") {
                 return allColors[7]
             } else if (Names[d.target.index] == "Average Salary") {
                 return allColors[8]
-            } else if (Names[d.target.index] == "Unemployment Rate") {
+            } else if (Names[d.target.index] == "Employment Rate") {
                 return allColors[9]
-            } else if (Names[d.target.index] == "Music Venues per 100k ppl") {
+            } else if (Names[d.target.index] == "Music Venues/100k ppl") {
                 return allColors[10]
-            } else if (Names[d.target.index] == "Cheap Takeouts per 100k ppl") {
+            } else if (Names[d.target.index] == "Cheap Takeouts/100k ppl") {
                 return allColors[11]
-            } else if (Names[d.target.index] == "Laundromats per 100 ppl") {
+            } else if (Names[d.target.index] == "Laundromats/100k ppl") {
                 return allColors[12]
-            } else if (Names[d.target.index] == "Coffee shops per 100 ppl") {
+            } else if (Names[d.target.index] == "Coffee shops/100k ppl") {
                 return allColors[13]
-            } else if (Names[d.target.index] == "Young and Single") {
+            } else if (Names[d.target.index] == "Young, Single Population (%)") {
                 return allColors[14]
-            } else if (Names[d.target.index] == "Crime") {
+            } else if (Names[d.target.index] == "Safety") {
                 return allColors[15]
-            } else if (Names[d.target.index] == "Events") {
+            } else if (Names[d.target.index] == "Upcoming Events") {
                 return allColors[16]
             } else {
                 return "none"
@@ -623,7 +635,7 @@ $.getJSON("../js/data.json", function (data) {
 
 
         Names = getNames(selectC, selectA);
-        console.log("Names are", Names);
+        //console.log("Names are", Names);
         matrix = createMatrix(Names, allCities, allAttributes);
         getTotalNumber(matrix);
         //console.log(matrix);
@@ -670,37 +682,37 @@ $.getJSON("../js/data.json", function (data) {
                 if ($.inArray(Names[i], selectA) > -1) {
                     if (Names[i] == "Public Transportation Usage") {
                         return allColors[0]
-                    } else if (Names[i] == "Congestion") {
+                    } else if (Names[i] == "Congestion Level") {
                         return allColors[1]
                     } else if (Names[i] == "Walking Score") {
                         return allColors[2]
-                    } else if (Names[i] == "2Bed Apartment Rent") {
+                    } else if (Names[i] == "2Bed Apartment Rent/mon") {
                         return allColors[3]
-                    } else if (Names[i] == "Gas per Gallon") {
+                    } else if (Names[i] == "Cost of Gas/gal") {
                         return allColors[4]
-                    } else if (Names[i] == "Electricity") {
+                    } else if (Names[i] == "Cost of Electricity/mon") {
                         return allColors[5]
-                    } else if (Names[i] == "Grocery") {
+                    } else if (Names[i] == "Cost of Grocery/mon") {
                         return allColors[6]
-                    } else if (Names[i] == "Internet") {
+                    } else if (Names[i] == "Cost of Internet/mon") {
                         return allColors[7]
                     } else if (Names[i] == "Average Salary") {
                         return allColors[8]
-                    } else if (Names[i] == "Unemployment Rate") {
+                    } else if (Names[i] == "Employment Rate") {
                         return allColors[9]
-                    } else if (Names[i] == "Music Venues per 100k ppl") {
+                    } else if (Names[i] == "Music Venues/100k ppl") {
                         return allColors[10]
-                    } else if (Names[i] == "Cheap Takeouts per 100k ppl") {
+                    } else if (Names[i] == "Cheap Takeouts/100k ppl") {
                         return allColors[11]
-                    } else if (Names[i] == "Laundromats per 100 ppl") {
+                    } else if (Names[i] == "Laundromats/100k ppl") {
                         return allColors[12]
-                    } else if (Names[i] == "Coffee shops per 100 ppl") {
+                    } else if (Names[i] == "Coffee shops/100k ppl") {
                         return allColors[13]
-                    } else if (Names[i] == "Young and Single") {
+                    } else if (Names[i] == "Young, Single Population (%)") {
                         return allColors[14]
-                    } else if (Names[i] == "Crime") {
+                    } else if (Names[i] == "Safety") {
                         return allColors[15]
-                    } else if (Names[i] == "Events") {
+                    } else if (Names[i] == "Upcoming Events") {
                         return allColors[16]
                     }
                 }else if($.inArray(Names[i], selectC)>-1){
@@ -709,42 +721,42 @@ $.getJSON("../js/data.json", function (data) {
                     return "none";
                 }        })
             .style("fill", function (d, i) {
-                console.log("this one is", Names[i]);
-                console.log(Names[i]);
+                //console.log("this one is", Names[i]);
+                //console.log(Names[i]);
                 if ($.inArray(Names[i], selectA) > -1) {
                     if (Names[i] == "Public Transportation Usage") {
                         return allColors[0]
-                    } else if (Names[i] == "Congestion") {
+                    } else if (Names[i] == "Congestion Level") {
                         return allColors[1]
                     } else if (Names[i] == "Walking Score") {
                         return allColors[2]
-                    } else if (Names[i] == "2Bed Apartment Rent") {
+                    } else if (Names[i] == "2Bed Apartment Rent/mon") {
                         return allColors[3]
-                    } else if (Names[i] == "Gas per Gallon") {
+                    } else if (Names[i] == "Cost of Gas/gal") {
                         return allColors[4]
-                    } else if (Names[i] == "Electricity") {
+                    } else if (Names[i] == "Cost of Electricity/mon") {
                         return allColors[5]
-                    } else if (Names[i] == "Grocery") {
+                    } else if (Names[i] == "Cost of Grocery/mon") {
                         return allColors[6]
-                    } else if (Names[i] == "Internet") {
+                    } else if (Names[i] == "Cost of Internet/mon") {
                         return allColors[7]
                     } else if (Names[i] == "Average Salary") {
                         return allColors[8]
-                    } else if (Names[i] == "Unemployment Rate") {
+                    } else if (Names[i] == "Employment Rate") {
                         return allColors[9]
-                    } else if (Names[i] == "Music Venues per 100k ppl") {
+                    } else if (Names[i] == "Music Venues/100k ppl") {
                         return allColors[10]
-                    } else if (Names[i] == "Cheap Takeouts per 100k ppl") {
+                    } else if (Names[i] == "Cheap Takeouts/100k ppl") {
                         return allColors[11]
-                    } else if (Names[i] == "Laundromats per 100 ppl") {
+                    } else if (Names[i] == "Laundromats/100k ppl") {
                         return allColors[12]
-                    } else if (Names[i] == "Coffee shops per 100 ppl") {
+                    } else if (Names[i] == "Coffee shops/100k ppl") {
                         return allColors[13]
-                    } else if (Names[i] == "Young and Single") {
+                    } else if (Names[i] == "Young, Single Population (%)") {
                         return allColors[14]
-                    } else if (Names[i] == "Crime") {
+                    } else if (Names[i] == "Safety") {
                         return allColors[15]
-                    } else if (Names[i] == "Events") {
+                    } else if (Names[i] == "Upcoming Events") {
                         return allColors[16]
                     }
                 }else if($.inArray(Names[i], selectC)>-1){
@@ -786,7 +798,7 @@ $.getJSON("../js/data.json", function (data) {
                 return Names[i];
             })
             .attr("fill", function(d,i){
-                console.log("colorcheck", Names[i]);
+                //console.log("colorcheck", Names[i]);
                 if($.inArray(Names[i], selectC)>-1){
                     return "#009688"
                 }
@@ -803,41 +815,41 @@ $.getJSON("../js/data.json", function (data) {
             .attr("class", "chord")
             .style("stroke", "none")
             .style("fill", function (d, i) {
-                console.log("this one is", Names[i]);
-                console.log(Names[d.target.index]);
+                //console.log("this one is", Names[i]);
+                //console.log(Names[d.target.index]);
                 if (Names[d.target.index] == "Public Transportation Usage") {
                     return allColors[0]
-                } else if (Names[d.target.index] == "Congestion") {
+                } else if (Names[d.target.index] == "Congestion Level") {
                     return allColors[1]
                 } else if (Names[d.target.index] == "Walking Score") {
                     return allColors[2]
-                } else if (Names[d.target.index] == "2Bed Apartment Rent") {
+                } else if (Names[d.target.index] == "2Bed Apartment Rent/mon") {
                     return allColors[3]
-                } else if (Names[d.target.index] == "Gas per Gallon") {
+                } else if (Names[d.target.index] == "Cost of Gas/gal") {
                     return allColors[4]
-                } else if (Names[d.target.index] == "Electricity") {
+                } else if (Names[d.target.index] == "Cost of Electricity/mon") {
                     return allColors[5]
-                } else if (Names[d.target.index] == "Grocery") {
+                } else if (Names[d.target.index] == "Cost of Grocery/mon") {
                     return allColors[6]
-                } else if (Names[d.target.index] == "Internet") {
+                } else if (Names[d.target.index] == "Cost of Internet/mon") {
                     return allColors[7]
                 } else if (Names[d.target.index] == "Average Salary") {
                     return allColors[8]
-                } else if (Names[d.target.index] == "Unemployment Rate") {
+                } else if (Names[d.target.index] == "Employment Rate") {
                     return allColors[9]
-                } else if (Names[d.target.index] == "Music Venues per 100k ppl") {
+                } else if (Names[d.target.index] == "Music Venues/100k ppl") {
                     return allColors[10]
-                } else if (Names[d.target.index] == "Cheap Takeouts per 100k ppl") {
+                } else if (Names[d.target.index] == "Cheap Takeouts/100k ppl") {
                     return allColors[11]
-                } else if (Names[d.target.index] == "Laundromats per 100 ppl") {
+                } else if (Names[d.target.index] == "Laundromats/100k ppl") {
                     return allColors[12]
-                } else if (Names[d.target.index] == "Coffee shops per 100 ppl") {
+                } else if (Names[d.target.index] == "Coffee shops/100k ppl") {
                     return allColors[13]
-                } else if (Names[d.target.index] == "Young and Single") {
+                } else if (Names[d.target.index] == "Young, Single Population (%)") {
                     return allColors[14]
-                } else if (Names[d.target.index] == "Crime") {
+                } else if (Names[d.target.index] == "Safety") {
                     return allColors[15]
-                } else if (Names[d.target.index] == "Events") {
+                } else if (Names[d.target.index] == "Upcoming Events") {
                     return allColors[16]
                 }else {
                     return "none"
@@ -857,18 +869,18 @@ $.getJSON("../js/data.json", function (data) {
         ///////////////////////// Tooltip //////////////////////////
         ////////////////////////////////////////////////////////////
 
-        //Arcs
-        g.append("title")
-            .text(function (d, i) {
-                console.log(d);
-                return Math.round(d.value) + " people in " + Names[i];
-            });
-
-        //Chords
-        chords.append("title")
-            .text(function (d) {
-                return [Math.round(d.source.value), " people from ", Names[d.target.index], " to ", Names[d.source.index]].join("");
-            });
+        ////Arcs
+        //g.append("title")
+        //    .text(function (d, i) {
+        //        //console.log(d);
+        //        return Math.round(d.value) + " people in " + Names[i];
+        //    });
+        //
+        ////Chords
+        //chords.append("title")
+        //    .text(function (d) {
+        //        return [Math.round(d.source.value), " people from ", Names[d.target.index], " to ", Names[d.source.index]].join("");
+        //    });
 
         ////////////////////////////////////////////////////////////
         ////////////////// Extra Functions /////////////////////////
@@ -943,15 +955,15 @@ $.getJSON("../js/data.json", function (data) {
     }
 
     $(".legend-labels").find("input").click(function () {
-        console.log("value is ", $(this).val())
+        //console.log("value is ", $(this).val())
         if ($(this).is(':checked')) {
             //console.log("inArray val",$.inArray($(this).val(), selectA) < 0);
             if ($.inArray($(this).val(), selectA) < 0) {
 
-                console.log("pushing");
+                //console.log("pushing");
                 selectA.push($(this).val());
 
-                console.log(flag);
+                //console.log(flag);
 
                 go(flag);
                 render(selectC, selectA);
@@ -973,7 +985,7 @@ $.getJSON("../js/data.json", function (data) {
                 $(this).prop('checked', true);
             }
         }
-        console.log(selectA);
+        //console.log(selectA);
     });
 
     //handles clicking on city list
@@ -981,9 +993,9 @@ $.getJSON("../js/data.json", function (data) {
         var dotID = $(this).attr('id').replace('cb', '');
         if ($(this).is(':checked')) {
             if (selectC.length < 9) {
-                console.log("inArray val", $.inArray($(this).val(), selectC));
+                //console.log("inArray val", $.inArray($(this).val(), selectC));
                 if ($.inArray($(this).val(), selectC) < 0) {
-                    console.log("pushing");
+                    //console.log("pushing");
                     selectC.push($(this).val());
                     //d3.selectAll("#chart> svg > *").remove();
                     render(selectC, selectA);
@@ -1001,7 +1013,7 @@ $.getJSON("../js/data.json", function (data) {
             }
         } else {
             if (selectC.length > 3) {
-                console.log("removing", $(this).val());
+                //console.log("removing", $(this).val());
                 //selectA.splice(selectA.indexOf($(this).val()), 1);
                 selectC.splice(selectC.indexOf($(this).val()), 1);
                 //d3.selectAll("#chart> svg > *").remove();
@@ -1014,7 +1026,7 @@ $.getJSON("../js/data.json", function (data) {
                 colorRed(dotID);
             }
         }
-        console.log(selectC)
+        //console.log(selectC)
     });
 
     //handles clicking on city map
